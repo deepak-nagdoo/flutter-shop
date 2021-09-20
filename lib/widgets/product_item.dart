@@ -55,11 +55,26 @@ class ProductItem extends StatelessWidget {
             backgroundColor: Colors.black87,
             leading: IconButton(
               icon: Icon(
-                product.isFavrouite ? Icons.favorite : Icons.favorite_border,
+                product.isFavorite ? Icons.favorite : Icons.favorite_border,
                 color: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
                 product.toggleFavrouite();
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Added to favorite!',
+                    ),
+                    duration: Duration(
+                      seconds: 3,
+                    ),
+                    action: SnackBarAction(
+                      label: 'Undo',
+                      onPressed: product.toggleFavrouite,
+                    ),
+                  ),
+                );
               },
             ),
             trailing: IconButton(
@@ -70,11 +85,46 @@ class ProductItem extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               onPressed: () {
+                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 if (cartProvider.existingInCart(product.id)) {
                   cartProvider.removeFromCart(product.id);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Removed from cart!',
+                      ),
+                      duration: Duration(
+                        seconds: 3,
+                      ),
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () {
+                          cartProvider.addToCart(
+                            product,
+                          );
+                        },
+                      ),
+                    ),
+                  );
                 } else {
                   cartProvider.addToCart(
                     product,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Added to cart!',
+                      ),
+                      duration: Duration(
+                        seconds: 3,
+                      ),
+                      action: SnackBarAction(
+                        label: 'Undo',
+                        onPressed: () {
+                          cartProvider.removeFromCart(product.id);
+                        },
+                      ),
+                    ),
                   );
                 }
               },

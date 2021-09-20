@@ -5,6 +5,7 @@ class ShopTheme {
   static main(BuildContext context) {
     return ThemeData(
       primaryColor: primeC,
+      primarySwatch: primeC,
       textTheme: TextTheme(
         headline1: TextStyle(
           fontSize: 20,
@@ -18,6 +19,7 @@ class ShopTheme {
       appBarTheme: appBar(context),
       colorScheme: ColorScheme.fromSwatch().copyWith(
         secondary: Colors.orange,
+        primary: primeC,
       ),
     );
   }

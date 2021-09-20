@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shop/screens/cart_screen.dart';
 import 'package:shop/screens/home_screen.dart';
 import 'package:shop/screens/orders_screen.dart';
-import 'package:shop/screens/product_screen.dart';
+import 'package:shop/screens/manage_product_screen.dart';
 import 'package:shop/utils/shop_theme.dart';
 
 class ShopDrawer extends StatelessWidget {
@@ -50,9 +50,9 @@ class ShopDrawer extends StatelessWidget {
                 OrdersScreen.routeName,
               );
             }),
-            _menuItem(context, 'Products', Icons.poll_rounded, () {
+            _menuItem(context, 'Manage Products', Icons.edit, () {
               Navigator.of(context).popAndPushNamed(
-                ProductScreen.routeName,
+                ManageProductScreen.routeName,
               );
             }),
           ],

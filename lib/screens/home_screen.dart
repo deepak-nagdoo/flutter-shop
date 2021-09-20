@@ -19,6 +19,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      Provider.of<ProductProvider>(context, listen: false).fetchProducts();
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ProductProvider>(context);
     var cartProvider = Provider.of<CartProvider>(context);
@@ -65,24 +73,29 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       drawer: const ShopDrawer(),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 5,
-        ),
-        itemBuilder: (ctx, index) {
-          return ChangeNotifierProvider.value(
-            value: products[index],
-            child: ProductItem(
-              key: ValueKey(
-                products[index].id,
-              ),
-            ),
-          );
+      body: RefreshIndicator(
+        onRefresh: () {
+          return provider.fetchProducts();
         },
-        itemCount: products.length,
+        child: GridView.builder(
+          padding: const EdgeInsets.all(10),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 5,
+          ),
+          itemBuilder: (ctx, index) {
+            return ChangeNotifierProvider.value(
+              value: products[index],
+              child: ProductItem(
+                key: ValueKey(
+                  products[index].id,
+                ),
+              ),
+            );
+          },
+          itemCount: products.length,
+        ),
       ),
     );
   }
